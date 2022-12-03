@@ -18,16 +18,37 @@ export default class PopularScreen extends Component {
       ngrok_url:""
     };
   }
-
+  componentDidMount(){
+    getData()
+  }
   getData = () => {
      /*Complete a função getData().*/
-
+     const url = this.state.url + '/popular-articles'
+     axios.get(url)
+     .then(async(response)=>{
+       this.setState({data:response.data.data})
+     }).catch((error)=>{
+       console.log(error.message)
+     })
 
   };
 
   /*Escreva as funções keyExtractor() e renderItems() para a FlatList*/
-
-
+  keyExtractor=(item,index)=> index.toString()
+  renderItens=({item,index})=>{
+    return(
+      <View style={styles.cardContainer}>
+        <Image style={styles.posterImage} source={{uri:item.poster_link}} />
+        <View style={styles.movieTitleContainer}>
+          <Text style={styles.title}>{item.original_title}</Text>
+          <View style={{flexDirection:'row'}}>
+            <Text style={styles.subtitle}>{item.duration} min | </Text>            
+            <Star score={item.rating} style={styles.starStyle}/> 
+          </View>
+        </View>
+      </View>
+    )
+  }
   render() {
     const { data } = this.state;
     return (
@@ -37,13 +58,14 @@ export default class PopularScreen extends Component {
           style={{ flex: 1 }}
         >
           {/* Adicione o componente FlatList aqui para mostrar a lista de artigos*/}
-       
+          <FlatList data={data} keyExtractor={this.keyExtractor} renderItem={this.renderItens}/>
        
         </ImageBackground>
       </View>
     );
+    }
   }
-}
+
 
 const styles = StyleSheet.create({
   container: {

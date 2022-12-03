@@ -17,7 +17,7 @@ export default class HomeScreen extends Component {
     super();
     this.state = {
       articleDetails: {},
-      ngrok_url: "http://127.0.0.1:5000",
+      ngrok_url: "https://b3c2-121-241-7-122.ngrok.io",
     };
   }
 
@@ -26,41 +26,40 @@ export default class HomeScreen extends Component {
   }
 
   getArticle = () => {
-    /*Complete a função getArticle().*/
-    const url = this.state.ngrok_url + '/get-article'
-    axios.get(url)
-    .then((response)=>{
-      this.setState({
-        articleDetails:response.data.data
+    const url = this.state.ngrok_url + "/get-article";
+    axios
+      .get(url)
+      .then((response) => {
+        let details = response.data.data;
+        this.setState({ articleDetails: details });
       })
-    })
-    .catch((error)=>{
-      console.log(error.message)
-    })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   likedArticle = () => {
-    /*Complete a função likedArticle() .*/
-    const url = this.state.ngrok_url + '/liked-article'
-    axios.get(url)
-    .then((response)=>{
-      this.getArticle()
-    })
-    .catch((error)=>{
-      console.log(error.message)
-    })
+    const url = this.state.ngrok_url + "/liked-article";
+    axios
+      .get(url)
+      .then((response) => {
+        this.getArticle();
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   unlikedArticle = () => {
-    /*Complete a função unlikedArticle() .*/
-    const url = this.state.ngrok_url + '/unliked-article'
-    axios.get(url)
-    .then((response)=>{
-      this.getArticle()
-    })
-    .catch((error)=>{
-      console.log(error.message)
-    })
+    const url = this.state.ngrok_url + "/unliked-article";
+    axios
+      .get(url)
+      .then((response) => {
+        this.getArticle();
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   render() {
@@ -89,7 +88,7 @@ export default class HomeScreen extends Component {
 
             <View style={styles.subContainer}>
               {/* Adicione o componente WebView aqui para mostrar a URL do artigo*/}
-              <WebView source={{uri:url}}/>
+              <WebView source={{ uri: url }} />
 
               <View style={styles.iconButtonContainer}>
                 <TouchableOpacity onPress={this.likedArticle}>
